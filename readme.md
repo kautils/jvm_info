@@ -10,14 +10,14 @@ mkdir build
 cmake -S . -B ./build 
 cmake --install . --prefix=path_to_install_dir
 ```
-* use jdk which exists your system with no name.
+* use jdk which exists on your system with no name.
 
 ```shell
 mkdir build
 cmake -S . -B ./build -DJVM_JDK_ROOT=path_to_jdk_on_your_file_system
 cmake --install . --prefix=path_to_install_dir 
 ```
-* use jdk which exists your system with name.
+* use jdk which exists on your system with name.
 
 ```shell
 mkdir build
