@@ -15,7 +15,6 @@ unset(__prj_info)
 
 
 
-
 if(NOT DEFINED KAUTIL_THIRD_PARTY_DIR)
     set(KAUTIL_THIRD_PARTY_DIR ${CMAKE_BINARY_DIR})
     file(MAKE_DIRECTORY "${KAUTIL_THIRD_PARTY_DIR}")
@@ -125,17 +124,15 @@ target_compile_definitions(${${module_name}_interface} INTERFACE
 #install_interface
 if(${KAUTIL_JDK_BUNDLED})
     target_compile_definitions(${${module_name}_interface} INTERFACE
-            $<INSTALL_INTERFACE:JVM_SO="$<INSTALL_PREFIX>/bin/${${m}_jvm_name}/server/jvm.dll">
+            $<INSTALL_INTERFACE:JVM_SO="$<INSTALL_PREFIX>/jdk/${${m}_jvm_name}/bin/server/jvm.dll">
             $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
             )
-    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}>)
+    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/jdk/${${m}_jvm_name}>)
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-        target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}/win32>)
+        target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/jdk/${${m}_jvm_name}/win32>)
     endif()
     if(${KAUTIL_JDK_BUNDLED})
-        install(DIRECTORY ${KAUTIL_JDK_ROOT}/bin/ DESTINATION bin/${${m}_jvm_name})
-        install(DIRECTORY ${KAUTIL_JDK_ROOT}/include/ DESTINATION include/${${m}_jvm_name})
-        install(DIRECTORY ${KAUTIL_JDK_ROOT}/jmods/ DESTINATION jmods/${${m}_jvm_name})
+        install(DIRECTORY ${KAUTIL_JDK_ROOT}/ DESTINATION jdk/${${m}_jvm_name})
     endif()
 else()
     target_compile_definitions(${${module_name}_interface} INTERFACE
