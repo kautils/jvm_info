@@ -1,10 +1,20 @@
 cmake_minimum_required(VERSION 3.20)
 set(__version 0.0.1)
-project(KautilJniJvmInfo${__version}
-        LANGUAGES C CXX
-        VERSION ${__version}
-        )
-unset(__version)
+set(__prj_info LANGUAGES C CXX VERSION ${__version})
+
+set(JVM_NAME "${JVM_NAME}" CACHE STRING "name of jvm. this is used when using multiple version of jvms" FORCE)
+set(JVM_JNI_VERSION "${JVM_JNI_VERSION}" CACHE STRING "jni version such as JNI_VERSION_1_6. this is required officially. the detail should be found online." FORCE)
+set(JVM_JDK_ROOT "${JVM_JDK_ROOT}" CACHE STRING "path to jdk directory. this directory should have bin,include,jmods and others." FORCE)
+
+if(NOT ${JVM_NAME} STREQUAL "")
+    project(KautilJniJvmInfo-${JVM_NAME}-${__version} ${__prj_info})
+else()
+    project(KautilJniJvmInfo${__version} ${__prj_info})
+endif()
+unset(__prj_info)
+
+
+
 
 if(NOT DEFINED KAUTIL_THIRD_PARTY_DIR)
     set(KAUTIL_THIRD_PARTY_DIR ${CMAKE_BINARY_DIR})
@@ -25,12 +35,6 @@ git_clone(https://raw.githubusercontent.com/kautils/CMakeLibrarytemplate/v0.0.1/
 
 set(${PROJECT_NAME}_m_evacu ${m})
 set(m ${PROJECT_NAME}_evacu)
-
-set(JVM_NAME "${JVM_NAME}" CACHE STRING "name of jvm. this is used when using multiple version of jvms" FORCE)
-set(JVM_JNI_VERSION "${JVM_JNI_VERSION}" CACHE STRING "jni version such as JNI_VERSION_1_6. this is required officially. the detail should be found online." FORCE)
-set(JVM_JDK_ROOT "${JVM_JDK_ROOT}" CACHE STRING "path to jdk directory. this directory should have bin,include,jmods and others." FORCE)
-
-
 list(APPEND ${m}_unsetter ${m}_jvm_name ${m}_jvm_name_suffix)
 if(NOT ${JVM_NAME} STREQUAL "")
     set(${m}_jvm_name "${JVM_NAME}")
@@ -39,7 +43,6 @@ else()
     set(${m}_jvm_name "")
     set(${m}_jvm_name_suffix "")
 endif()
-
 
 if(NOT ${JVM_JNI_VERSION} STREQUAL "")
     set(KAUTIL_JNI_VERSION ${JNI_VERSION})
@@ -57,6 +60,9 @@ else()
     set(KAUTIL_JDK_VERSION 18.0.2.9.1)
     set(KAUTIL_JDK_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/third_party/open_jdk.${KAUTIL_JDK_VERSION}")
 endif()
+
+
+
 
 
 if(${KAUTIL_JDK_BUNDLED})
@@ -99,7 +105,7 @@ set(${module_name}_common_pref
     INCLUDES 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}> 
         $<BUILD_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH}>
-    EXPORT_NAME_PREFIX ${PROJECT_NAME}${${m}_jvm_name_suffix}
+    EXPORT_NAME_PREFIX ${PROJECT_NAME}
     EXPORT_VERSION ${PROJECT_VERSION}
     EXPORT_VERSION_COMPATIBILITY AnyNewerVersion
         
