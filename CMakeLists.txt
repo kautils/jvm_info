@@ -125,7 +125,7 @@ target_compile_definitions(${${module_name}_interface} INTERFACE
 #install_interface
 if(${KAUTIL_JDK_BUNDLED})
     target_compile_definitions(${${module_name}_interface} INTERFACE
-            $<INSTALL_INTERFACE:JVM_SO=$<INSTALL_PREFIX>/bin/${${m}_jvm_name}/server/jvm.dll>
+            $<INSTALL_INTERFACE:JVM_SO="$<INSTALL_PREFIX>/bin/${${m}_jvm_name}/server/jvm.dll">
             $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
             )
     target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}>)
