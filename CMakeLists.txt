@@ -127,7 +127,7 @@ if(${KAUTIL_JDK_BUNDLED})
             $<INSTALL_INTERFACE:JVM_SO="$<INSTALL_PREFIX>/jdk/${${m}_jvm_name}/bin/server/jvm.dll">
             $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
             )
-    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include>) # if treat multiple module, then include/[arbitrary_name]/jni.h 
+    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:jdk/${${m}_jvm_name}/include>) # if treat multiple module, then include/[arbitrary_name]/jni.h 
     if(${KAUTIL_JDK_BUNDLED})
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/bin/ DESTINATION jdk/${${m}_jvm_name}/bin)
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/lib/ DESTINATION jdk/${${m}_jvm_name}/lib)
