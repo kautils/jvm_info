@@ -36,7 +36,7 @@ target_link_libraries(some PRIVATE kautil::jni::jvm_info::0.0.1::interface)
 ```
 
 * build  with name 
-* assume that build with like below with name 'system_jdk'
+* assume that build with like below with name 'corretto-18.0.2'
 * cmake -S . -B ./build -DJVM_NAME='corretto-18.0.2'
 ```cmake
 set(KautilJniJvmInfo-corretto-18.0.2-0.0.1.interface_DIR  "path_to KautilJniJvmInfo-corretto-18.0.2-0.0.1.interfaceConfig.cmake dir")
@@ -44,6 +44,12 @@ find_package(KautilJniJvmInfo-corretto-18.0.2-0.0.1.interface REQUIRED)
 add_library(some static)
 target_link_libraries(some PRIVATE kautil::jni::jvm_info-corretto-18.0.2::0.0.1::interface)
 ```
-
-
+* assume that build with like below with name 'system_jdk'
+* cmake -S . -B ./build -DJVM_NAME='system_jdk'
+```cmake
+set(KautilJniJvmInfo-system_jdk-0.0.1.interface_DIR  "path_to KautilJniJvmInfo-system_jdk-0.0.1.interfaceConfig.cmake dir")
+find_package(KautilJniJvmInfo-system_jdk-0.0.1.interface REQUIRED)
+add_library(some static)
+target_link_libraries(some PRIVATE kautil::jni::jvm_info-system_jdk::0.0.1::interface)
+```
 
