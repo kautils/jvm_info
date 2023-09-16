@@ -105,6 +105,7 @@ set(${module_name}_common_pref
     INCLUDES 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}> 
         $<BUILD_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH}>
+        $<BUILD_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH_platform_dep}>
     EXPORT_NAME_PREFIX ${PROJECT_NAME}
     EXPORT_VERSION ${PROJECT_VERSION}
     EXPORT_VERSION_COMPATIBILITY AnyNewerVersion
@@ -128,6 +129,9 @@ if(${KAUTIL_JDK_BUNDLED})
             $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
             )
     target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}>)
+    if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+        target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}/win32>)
+    endif()
     if(${KAUTIL_JDK_BUNDLED})
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/bin/ DESTINATION bin/${${m}_jvm_name})
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/include/ DESTINATION include/${${m}_jvm_name})
@@ -138,7 +142,10 @@ else()
             $<INSTALL_INTERFACE:JVM_SO="${KAUTIL_JNI_PATH_TO_JVM_SHARED_LIB}">
             $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
             )
-    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH}>)
+    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH}}>)
+    if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+        target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH}/win32}>)
+    endif()
 endif()
 
 
