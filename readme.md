@@ -1,6 +1,7 @@
 ### kautil_jvm_info
 * the infomation of JVM (java virtual machine) to use it from c/c++.
 * currently only support mingw.
+* generate cmake configuration files which can avoid version conflicts.
 
 ### build
 * use jdk whcih is download by embedded code. 
