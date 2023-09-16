@@ -127,16 +127,17 @@ if(${KAUTIL_JDK_BUNDLED})
             $<INSTALL_INTERFACE:JVM_SO="$<INSTALL_PREFIX>/jdk/${${m}_jvm_name}/bin/server/jvm.dll">
             $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
             )
-    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}>)
-    if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-        target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include/${${m}_jvm_name}/win32>)
-    endif()
+    target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:include>) # if treat multiple module, then include/[arbitrary_name]/jni.h 
     if(${KAUTIL_JDK_BUNDLED})
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/bin/ DESTINATION jdk/${${m}_jvm_name}/bin)
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/lib/ DESTINATION jdk/${${m}_jvm_name}/lib)
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/conf/ DESTINATION jdk/${${m}_jvm_name}/conf)
         install(DIRECTORY ${KAUTIL_JDK_ROOT}/jmods/ DESTINATION jdk/${${m}_jvm_name}/jmods)
-        install(DIRECTORY ${KAUTIL_JDK_ROOT}/include/ DESTINATION include/${${m}_jvm_name})
+        file(GLOB __include_common LIST_DIRECTORIES false ${KAUTIL_JDK_ROOT}/include/*)
+        install(FILES ${__include_common} DESTINATION jdk/${${m}_jvm_name}/include/${${m}_jvm_name})
+        if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+            install(DIRECTORY ${KAUTIL_JDK_ROOT}/include/win32/ DESTINATION jdk/${${m}_jvm_name}/include/${${m}_jvm_name}) # because required jni_md.h
+        endif()
     endif()
 else()
     target_compile_definitions(${${module_name}_interface} INTERFACE
