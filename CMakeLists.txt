@@ -119,13 +119,13 @@ CMakeLibraryTemplate(${module_name} EXPORT_LIB_TYPE interface ${${module_name}_c
 # build_insterface
 target_compile_definitions(${${module_name}_interface} INTERFACE
         $<BUILD_INTERFACE:JVM_SO="${KAUTIL_JNI_PATH_TO_JVM_SHARED_LIB}">
-        $<BUILD_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
+        $<BUILD_INTERFACE:JVM_JNI_VERSION=${KAUTIL_JNI_VERSION}>
         )
 #install_interface
 if(${KAUTIL_JDK_BUNDLED})
     target_compile_definitions(${${module_name}_interface} INTERFACE
             $<INSTALL_INTERFACE:JVM_SO="$<INSTALL_PREFIX>/jdk/${${m}_jvm_name}/bin/server/jvm.dll">
-            $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
+            $<INSTALL_INTERFACE:JVM_JNI_VERSION=${KAUTIL_JNI_VERSION}>
             )
     target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:jdk/${${m}_jvm_name}/include>) # if treat multiple module, then include/[arbitrary_name]/jni.h 
     if(${KAUTIL_JDK_BUNDLED})
@@ -142,7 +142,7 @@ if(${KAUTIL_JDK_BUNDLED})
 else()
     target_compile_definitions(${${module_name}_interface} INTERFACE
             $<INSTALL_INTERFACE:JVM_SO="${KAUTIL_JNI_PATH_TO_JVM_SHARED_LIB}">
-            $<INSTALL_INTERFACE:JNI_VERSION_BUILD_TIME=${KAUTIL_JNI_VERSION}>
+            $<INSTALL_INTERFACE:JVM_JNI_VERSION=${KAUTIL_JNI_VERSION}>
             )
     target_include_directories(${${module_name}_interface} INTERFACE $<INSTALL_INTERFACE:${KAUTIL_JDK_INCLUDE_PATH}}>)
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
